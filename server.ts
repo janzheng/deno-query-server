@@ -1,3 +1,6 @@
+
+import banana from "./server"
+
 const kv = await Deno.openKv();
 
 Deno.serve(async (request: Request) => {
@@ -9,13 +12,15 @@ Deno.serve(async (request: Request) => {
     return new Response(JSON.stringify(result));
   }
 
+  return new Response(banana);
+
   // Redirect short links
-  const slug = request.url.split("/").pop() || "";
-  const url = (await kv.get(["links", slug])).value as string;
-  if (url) {
-    return Response.redirect(url, 301);
-  } else {
-    const m = !slug ? "Please provide a slug." : `Slug "${slug}" not found`;
-    return new Response(m, { status: 404 });
-  }
+  // const slug = request.url.split("/").pop() || "";
+  // const url = (await kv.get(["links", slug])).value as string;
+  // if (url) {
+  //   return Response.redirect(url, 301);
+  // } else {
+  //   const m = !slug ? "Please provide a slug." : `Slug "${slug}" not found`;
+  //   return new Response(m, { status: 404 });
+  // }
 });
